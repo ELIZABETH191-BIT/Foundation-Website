@@ -434,7 +434,7 @@ p { color: var(--slate); }
 .hero-photo::before { display: none; }
 
 /* ============ HERO — VIDEO VARIANT ============ */
-.hero-video { background-color: var(--ink); }
+.hero-video { background-color: var(--ink); background-size: cover; background-position: center 20%; background-repeat: no-repeat; }
 .hero-video::before { display: none; }
 .hero-video-el {
   position: absolute;
@@ -446,9 +446,7 @@ p { color: var(--slate); }
   z-index: 0;
 }
 @media (max-width: 760px) {
-  /* Skip autoplay video on mobile to save data; poster image shows instead via inline style */
-  .hero-video-el { display: none; }
-  .hero-video.hero-video { background-size: cover; background-position: center 20%; background-repeat: no-repeat; }
+  .hero-video-el { object-position: center 20%; }
 }
 
 /* ============ VIDEO SHOWCASE (Impact/Gallery) ============ */
@@ -1470,6 +1468,20 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
 // HADASSAH FOUNDATION — main.js
 // =========================================================
 document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---------- Hero video autoplay fallback ---------- */
+  // If the browser blocks autoplay (some mobile browsers do this even when muted),
+  // hide the <video> so the section's background-image (poster) shows through cleanly
+  // instead of leaving a black/blank video box on screen.
+  const heroVideo = document.querySelector('.hero-video-el');
+  if (heroVideo) {
+    const playAttempt = heroVideo.play();
+    if (playAttempt !== undefined) {
+      playAttempt.catch(() => {
+        heroVideo.style.display = 'none';
+      });
+    }
+  }
 
   /* ---------- Sticky header on scroll ---------- */
   const header = document.querySelector('.site-header');

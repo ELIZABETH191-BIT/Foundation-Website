@@ -434,7 +434,7 @@ p { color: var(--slate); }
 .hero-photo::before { display: none; }
 
 /* ============ HERO — VIDEO VARIANT ============ */
-.hero-video { background-color: var(--ink); }
+.hero-video { background-color: var(--ink); background-size: cover; background-position: center 20%; background-repeat: no-repeat; }
 .hero-video::before { display: none; }
 .hero-video-el {
   position: absolute;
@@ -446,9 +446,7 @@ p { color: var(--slate); }
   z-index: 0;
 }
 @media (max-width: 760px) {
-  /* Skip autoplay video on mobile to save data; poster image shows instead via inline style */
-  .hero-video-el { display: none; }
-  .hero-video.hero-video { background-size: cover; background-position: center 20%; background-repeat: no-repeat; }
+  .hero-video-el { object-position: center 20%; }
 }
 
 /* ============ VIDEO SHOWCASE (Impact/Gallery) ============ */
@@ -1291,7 +1289,7 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
         <div class="feature-copy">
           <div class="eyebrow">Program 01</div>
           <h2>Youth Empowerment</h2>
-          <p>Our Youth Empowerment program pairs mentorship with structured leadership training, helping young people build confidence, set goals, and develop the life skills needed to thrive. Activities include weekly mentorship circles, career-readiness workshops, and peer-support networks. <em style="opacity:.6">(placeholder detail copy — replace with verified program information)</em></p>
+          <p>Our Youth Empowerment program pairs mentorship with structured leadership training, helping young people build confidence, set goals, and develop the life skills needed to thrive. Activities include weekly mentorship circles, career-readiness workshops, and peer-support networks.</p>
           <a href="volunteer.html" class="btn btn-outline-dark" style="margin-top:20px;">Volunteer With This Program</a>
         </div>
       </div>
@@ -1307,7 +1305,7 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
         <div class="feature-copy">
           <div class="eyebrow">Program 02</div>
           <h2>Skills Acquisition</h2>
-          <p>Through our Skills Acquisition centers, participants train in vocations such as tailoring, ICT, catering, and craftsmanship — gaining certifications and starter resources to launch their own income-generating work. <em style="opacity:.6">(placeholder detail copy — replace with verified program information)</em></p>
+          <p>Through our Skills Acquisition centers, participants train in vocations such as tailoring, ICT, catering, and craftsmanship — gaining certifications and starter resources to launch their own income-generating work.</p>
           <a href="donate.html" class="btn btn-outline-dark" style="margin-top:20px;">Support This Program</a>
         </div>
       </div>
@@ -1323,7 +1321,7 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
         <div class="feature-copy">
           <div class="eyebrow">Program 03</div>
           <h2>Community Outreach</h2>
-          <p>Our outreach teams visit underserved neighborhoods directly, distributing essentials, running health-awareness drives, and connecting families with longer-term support. <em style="opacity:.6">(placeholder detail copy — replace with verified program information)</em></p>
+          <p>Our outreach teams visit underserved neighborhoods directly, distributing essentials, running health-awareness drives, and connecting families with longer-term support.</p>
           <a href="volunteer.html" class="btn btn-outline-dark" style="margin-top:20px;">Volunteer With This Program</a>
         </div>
       </div>
@@ -1339,7 +1337,7 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
         <div class="feature-copy">
           <div class="eyebrow">Program 04</div>
           <h2>Education Support</h2>
-          <p>We provide scholarships, school supplies, and after-school tutoring to keep at-risk children enrolled and progressing — because an interrupted education is one of the hardest things to recover from. <em style="opacity:.6">(placeholder detail copy — replace with verified program information)</em></p>
+          <p>We provide scholarships, school supplies, and after-school tutoring to keep at-risk children enrolled and progressing — because an interrupted education is one of the hardest things to recover from.</p>
           <a href="donate.html" class="btn btn-outline-dark" style="margin-top:20px;">Sponsor a Child</a>
         </div>
       </div>
@@ -1355,7 +1353,7 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
         <div class="feature-copy">
           <div class="eyebrow">Program 05</div>
           <h2>Humanitarian Assistance</h2>
-          <p>When crisis strikes — flooding, displacement, sudden loss — our humanitarian response team mobilizes quickly to provide food, shelter materials, and emergency funds. <em style="opacity:.6">(placeholder detail copy — replace with verified program information)</em></p>
+          <p>When crisis strikes — flooding, displacement, sudden loss — our humanitarian response team mobilizes quickly to provide food, shelter materials, and emergency funds.</p>
           <a href="donate.html" class="btn btn-outline-dark" style="margin-top:20px;">Give Emergency Relief</a>
         </div>
       </div>
@@ -1371,7 +1369,7 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
         <div class="feature-copy">
           <div class="eyebrow">Program 06</div>
           <h2>Support for Vulnerable Individuals</h2>
-          <p>We provide ongoing care and check-ins for elderly residents, persons with disabilities, and individuals navigating personal crisis — ensuring no one in our community is forgotten. <em style="opacity:.6">(placeholder detail copy — replace with verified program information)</em></p>
+          <p>We provide ongoing care and check-ins for elderly residents, persons with disabilities, and individuals navigating personal crisis — ensuring no one in our community is forgotten.</p>
           <a href="volunteer.html" class="btn btn-outline-dark" style="margin-top:20px;">Volunteer With This Program</a>
         </div>
       </div>
@@ -1453,6 +1451,20 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
 // HADASSAH FOUNDATION — main.js
 // =========================================================
 document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---------- Hero video autoplay fallback ---------- */
+  // If the browser blocks autoplay (some mobile browsers do this even when muted),
+  // hide the <video> so the section's background-image (poster) shows through cleanly
+  // instead of leaving a black/blank video box on screen.
+  const heroVideo = document.querySelector('.hero-video-el');
+  if (heroVideo) {
+    const playAttempt = heroVideo.play();
+    if (playAttempt !== undefined) {
+      playAttempt.catch(() => {
+        heroVideo.style.display = 'none';
+      });
+    }
+  }
 
   /* ---------- Sticky header on scroll ---------- */
   const header = document.querySelector('.site-header');

@@ -434,7 +434,7 @@ p { color: var(--slate); }
 .hero-photo::before { display: none; }
 
 /* ============ HERO — VIDEO VARIANT ============ */
-.hero-video { background-color: var(--ink); }
+.hero-video { background-color: var(--ink); background-size: cover; background-position: center 20%; background-repeat: no-repeat; }
 .hero-video::before { display: none; }
 .hero-video-el {
   position: absolute;
@@ -446,9 +446,7 @@ p { color: var(--slate); }
   z-index: 0;
 }
 @media (max-width: 760px) {
-  /* Skip autoplay video on mobile to save data; poster image shows instead via inline style */
-  .hero-video-el { display: none; }
-  .hero-video.hero-video { background-size: cover; background-position: center 20%; background-repeat: no-repeat; }
+  .hero-video-el { object-position: center 20%; }
 }
 
 /* ============ VIDEO SHOWCASE (Impact/Gallery) ============ */
@@ -1322,7 +1320,7 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
         </div>
         <div class="timeline-item">
           <div class="timeline-year">2026 <em style="opacity:.6; font-size:0.7em;">(placeholder)</em></div>
-          <h3 style="font-size:1.05rem;">35+ Programs, Thousands Reached</h3>
+          <h3 style="font-size:1.05rem;">25+ Communities Served</h3>
           <p>Today, the foundation operates across six program areas with a growing volunteer network.</p>
         </div>
       </div>
@@ -1403,12 +1401,13 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
           <div class="founder-profile-title">Founder &amp; Executive Director<br>Hadassah Initiative for Empowerment Foundation</div>
 
           <div class="founder-profile-bio">
-            <p>Esther's vision for Hadassah Initiative for Empowerment Foundation was born from a deep conviction that every person — regardless of circumstance — deserves dignity, opportunity, and a genuine chance to thrive. Her passion for empowerment and humanitarian service has guided the foundation from a small community effort into a growing network of programs spanning education, skills acquisition, and emergency relief. <em style="opacity:.55">(placeholder biography — to be expanded with her full personal story)</em></p>
+            <p>Esther Oluwafeyisayo Olafisoye is the visionary founder of Hadassah Initiative for Empowerment Foundation, driven by an unwavering passion for humanitarian service and social transformation. Her journey was shaped by a deep conviction that lasting change begins with empowering those most often overlooked — women striving for economic independence, children in need of educational opportunity, and communities seeking a path toward self-sufficiency.</p>
+            <p>Under her leadership, the foundation has grown into a trusted platform for women empowerment, youth development, and community outreach, touching thousands of lives through skills training, education support, and humanitarian relief. Esther leads with compassion and conviction, believing that true leadership means walking alongside the people you serve — listening first, then building solutions that last. Her commitment to creating positive social impact continues to shape every program the foundation delivers.</p>
           </div>
 
           <div class="founder-profile-quote">
             <span class="quote-mark">&ldquo;</span>
-            <p>Every life we touch carries the weight of a community waiting to be transformed. My commitment has always been simple: to meet people where they are, and to walk with them toward the opportunities they deserve. This is the heart of everything we do at Hadassah. <em style="opacity:.55">(placeholder quote, to be replaced with her own words)</em></p>
+            <p>Every life touched, every child empowered, and every community transformed brings us closer to a better world.</p>
           </div>
 
           <div class="founder-profile-meta">
@@ -1532,6 +1531,20 @@ button[type="submit"].is-loading .btn-spinner { display: block; }
 // HADASSAH FOUNDATION — main.js
 // =========================================================
 document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---------- Hero video autoplay fallback ---------- */
+  // If the browser blocks autoplay (some mobile browsers do this even when muted),
+  // hide the <video> so the section's background-image (poster) shows through cleanly
+  // instead of leaving a black/blank video box on screen.
+  const heroVideo = document.querySelector('.hero-video-el');
+  if (heroVideo) {
+    const playAttempt = heroVideo.play();
+    if (playAttempt !== undefined) {
+      playAttempt.catch(() => {
+        heroVideo.style.display = 'none';
+      });
+    }
+  }
 
   /* ---------- Sticky header on scroll ---------- */
   const header = document.querySelector('.site-header');
